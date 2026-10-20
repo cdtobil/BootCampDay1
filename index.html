@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python for Data: Interactive Bootcamp</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#2B2B2B;--pn:#3C3F41;--ed:#232425;--ln:#4E5254;--ink:#BBBBBB;--hi:#fff;--or:#CC7832;--gr:#6A8759;--bl:#6897BB;--ye:#FFC66D;--pu:#9876AA;--gy:#808080;--sel:#214283;--g1:#21D789;--g2:#FCF84A;--g3:#07C3F2;--red:#FF6B68;
+--f:'Inter',system-ui,sans-serif;--m:'JetBrains Mono',ui-monospace,Consolas,monospace;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:inherit;margin:0}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--f);overflow:hidden;display:grid;grid-template:"top top" 46px "tree stage" 1fr "st st" 30px/265px 1fr}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:2px solid var(--g3);outline-offset:2px}
+#top{grid-area:top;background:var(--pn);border-bottom:1px solid #2B2B2B;display:flex;align-items:center;gap:12px;padding:0 12px}
+.mk{width:26px;height:26px;border-radius:5px;background:linear-gradient(135deg,var(--g1),var(--g2) 60%,var(--g3));position:relative;flex:none}
+.mk::after{content:"PC";position:absolute;left:3px;top:3px;width:16px;height:16px;background:#000;color:#fff;font:800 7px/16px var(--f);text-align:center}
+.proj{font-weight:600;color:var(--hi)}
+.tabf{margin-left:10px;padding:.35em .9em;background:var(--bg);border-bottom:2px solid var(--g1);color:var(--hi);font:.9rem var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+#top .nb{padding:.35em 1em;border-radius:6px;background:#4C5052;color:var(--hi);font-weight:600;font-size:.9rem}
+#top .nb:hover{background:var(--sel)}
+#top .nb.go{background:#365880}
+#menu{font-size:1.3rem;color:var(--hi);padding:0 .3em}
+@media(min-width:801px){body.hide{grid-template:"top top" 46px "stage stage" 1fr "st st" 30px/0 1fr}body.hide #tree{display:none}}
+#tree{grid-area:tree;background:var(--pn);overflow-y:auto;border-right:1px solid #2B2B2B;padding:8px 0;font-size:.92rem}
+.fd{padding:.4em .8em;color:var(--hi);font-weight:600;margin-top:4px}
+.fd::before{content:"▾ ";color:var(--or)}
+.fl{display:block;width:100%;text-align:left;padding:.3em .8em .3em 2.2em;font-family:var(--m);font-size:.85rem;color:var(--ink)}
+.fl::before{content:"■ ";color:var(--ye);font-size:.7em}
+.fl:hover{background:#4C5052}
+.fl.on{background:var(--sel);color:var(--hi)}
+#stage{grid-area:stage;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:clamp(18px,3.5vw,48px) clamp(18px,5vw,80px);overflow-y:auto}
+.slide.on{display:flex;animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.in{margin:auto 0;display:grid;gap:1.1rem;width:100%;max-width:1100px}
+h1{font-size:clamp(2.6rem,7.5vw,5.6rem);line-height:1;font-weight:800;letter-spacing:-.03em;color:var(--hi)}
+h1 span{background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(1.7rem,3.6vw,2.8rem);line-height:1.1;font-weight:800;letter-spacing:-.02em;color:var(--hi)}
+h2::after{content:"";display:block;width:64px;height:4px;border-radius:2px;margin-top:.5rem;background:linear-gradient(90deg,var(--g1),var(--g2))}
+p,li{font-size:clamp(1rem,1.7vw,1.3rem);line-height:1.55;max-width:64ch}
+.lead{font-size:clamp(1.1rem,2vw,1.6rem);color:var(--ink)}
+.hint{font-size:.95rem;color:var(--gy)}
+b{color:var(--hi)}
+code{font-family:var(--m);background:#3B3B3B;color:var(--ye);padding:.05em .4em;border-radius:4px;font-size:.88em}
+.logo{width:112px;height:112px;border-radius:16px;background:linear-gradient(135deg,var(--g1),var(--g2) 60%,var(--g3));position:relative}
+.logo b{position:absolute;left:18px;top:18px;width:76px;height:76px;background:#000;color:#fff;font:800 1.7rem/1 var(--f);padding:10px 0 0 10px}
+.logo i{position:absolute;left:28px;bottom:26px;width:34px;height:5px;background:#fff}
+.big{justify-self:start;padding:.7em 1.6em;border-radius:8px;background:linear-gradient(90deg,var(--g1),var(--g2));color:#1b1b1b;font-weight:800;font-size:1.1rem}
+.big:hover{filter:brightness(1.1)}
+.cols{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(16px,3vw,36px);align-items:start}
+.bul{padding-left:1.2em;display:grid;gap:.5em}
+.win{background:var(--bg);border:1px solid var(--ln);border-radius:8px;overflow:hidden;font:clamp(.82rem,1.4vw,1.12rem)/1.6 var(--m);box-shadow:0 10px 30px #0006}
+.wt{display:flex;align-items:center;justify-content:space-between;background:var(--pn);padding:0 8px 0 0;font-size:.85em}
+.tab{padding:.45em 1em;background:var(--bg);border-bottom:2px solid var(--g1);color:var(--hi)}
+.run{padding:.25em .9em;border-radius:5px;background:#365E3A;color:#9fe6a0;font:600 .85em var(--f)}
+.run:hover{background:#3f7a45}
+.ed{display:grid;grid-template-columns:auto 1fr}
+.ed pre{font:inherit;padding:.8em 0;margin:0}
+.gut{background:#313335;color:#606366;text-align:right;padding:.8em .8em!important;user-select:none}
+.src{padding:.8em 1.2em!important;overflow-x:auto;color:#A9B7C6}
+i{font-style:normal}i.c{color:var(--gy);font-style:italic}i.s{color:var(--gr)}i.k{color:var(--or)}i.n{color:var(--bl)}i.b{color:#8888C6}i.f{color:var(--ye)}
+.out{display:none;background:var(--ed);border-top:1px solid var(--ln);padding:.7em 1.2em;color:#A9B7C6;white-space:pre-wrap;min-height:3em}
+.out.on{display:block}.out .g{color:var(--gy)}.out .er{color:var(--red)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{text-align:left;background:var(--pn);border:1px solid var(--ln);border-top:4px solid var(--g3);border-radius:10px;padding:1em 1.2em;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:var(--g1)}
+.card.star{border-top-color:var(--g1)}
+.card h3{color:var(--hi);font-size:1.25rem;margin-bottom:.3em}
+.card p{font-size:1rem}
+.card .d{display:none;margin-top:.7em;padding-top:.7em;border-top:1px dashed var(--ln);color:var(--ye);font-size:1rem;line-height:1.5}
+.card.open .d{display:block}
+.chk{list-style:none;display:grid;gap:.5em;padding:0}
+.chk li{display:flex;gap:.8em;align-items:flex-start;cursor:pointer;padding:.6em .9em;background:var(--pn);border:1px solid var(--ln);border-radius:8px;max-width:none;color:var(--hi)}
+.chk li:hover{border-color:var(--g3)}
+.bx{flex:none;width:1.4em;height:1.4em;border:2px solid var(--gy);border-radius:5px;margin-top:.1em;display:grid;place-items:center;font-size:.8em;color:transparent}
+.chk li.done{color:var(--gy)}.chk li.done .bx{background:var(--g1);border-color:var(--g1);color:#000;font-weight:800}
+.chk li.done span:last-child{text-decoration:line-through}
+.prog{height:8px;background:var(--pn);border-radius:6px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .3s}
+.pt{font-size:.95rem;color:var(--gy)}.all .pt{color:var(--g1);font-weight:600}
+.tip{background:#3A372A;border-left:4px solid var(--ye);padding:.7em 1em;border-radius:0 8px 8px 0;color:var(--hi);max-width:64ch}
+.repl{background:var(--ed);border:1px solid var(--ln);border-radius:8px;font:clamp(.85rem,1.5vw,1.1rem)/1.6 var(--m);padding:.8em 1.1em}
+.repl .log{min-height:7em;max-height:34vh;overflow-y:auto;white-space:pre-wrap;color:#A9B7C6}
+.repl .log .u{color:var(--hi)}.repl .log .er{color:var(--red)}.repl .log .g{color:var(--gy)}
+.inl{display:flex;gap:.6em;color:var(--g1);margin-top:.4em}
+.inl input{flex:1;background:none;border:0;color:var(--hi);font:inherit;outline-offset:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:.9rem var(--m);padding:.4em .8em;border-radius:6px;background:var(--pn);border:1px solid var(--ln);color:var(--ye)}
+.chips button:hover{border-color:var(--g1)}
+.sl{width:100%;accent-color:var(--g1)}
+.ln{display:block;padding-left:.3em;border-left:3px solid transparent}.ln.on{background:#214283;border-left-color:var(--g1)}
+.num{font:800 3rem var(--f);color:var(--hi)}
+.res{font:clamp(1rem,1.8vw,1.4rem) var(--m);color:var(--g1)}
+.tabs{display:flex;gap:8px}.tb{padding:.5em 1.2em;border-radius:8px 8px 0 0;background:var(--pn);color:var(--ink);font-weight:600}.tb.on{background:var(--sel);color:var(--hi)}
+.pane{display:none;gap:1rem}.pane.on{display:grid}
+.mock{display:grid;grid-template:"p e e" 1fr "p r t" .7fr/.7fr 1fr 1fr;gap:6px;height:min(46vh,340px)}
+.rg{background:var(--pn);border:2px solid var(--ln);border-radius:6px;text-align:left;padding:.5em .8em;font:.8rem/1.5 var(--m);color:var(--ink);overflow:hidden}
+.rg:hover,.rg.on{border-color:var(--g1);box-shadow:0 0 0 2px #21D78955}
+.rg strong{display:block;color:var(--g3);font:700 .75rem var(--f);margin-bottom:.3em}
+.info:empty{display:none}.info{min-height:3.6em;padding:.8em 1em;background:var(--pn);border-radius:8px;color:var(--hi);border-left:4px solid var(--g1)}
+.q{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:1em 1.2em}
+.qt{color:var(--hi);font-weight:600;margin-bottom:.6em}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.op{padding:.45em 1em;border-radius:6px;background:var(--bg);border:2px solid var(--ln);font:.95rem var(--m);color:var(--ink)}
+.op:hover{border-color:var(--g3)}.op.ok{border-color:var(--g1);color:var(--g1)}.op.bad{border-color:var(--red);color:var(--red)}
+.ex{display:none;margin-top:.6em;color:var(--ye);font-size:1rem}.ex.on{display:block}
+.score{font:800 clamp(3rem,10vw,6rem)/1 var(--f);background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#st{grid-area:st;background:var(--pn);border-top:1px solid #2B2B2B;display:flex;align-items:center;gap:16px;padding:0 12px;font-size:.8rem;color:var(--ink);position:relative}
+#st i{position:absolute;left:0;top:-2px;height:2px;width:0;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .3s}
+#st .r{margin-left:auto}
+.fc{display:flex;flex-direction:column;align-items:center}
+.fb{padding:.55em 1.2em;border:2px solid var(--g3);border-radius:8px;background:var(--pn);color:var(--hi);font:clamp(.85rem,1.5vw,1.05rem) var(--m);text-align:center}
+.fb.t{border-radius:999px;border-color:var(--g1)}.fb.d{border-color:var(--ye);color:var(--ye)}
+.fa{color:var(--gy);line-height:1.3;font-size:1.05rem}
+.br{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;width:100%;max-width:440px}
+.bc{display:flex;flex-direction:column;align-items:center}
+/* ===== visual polish ===== */
+*{scrollbar-width:thin;scrollbar-color:#555 transparent}
+#stage::before,#stage::after{content:"";position:absolute;pointer-events:none;z-index:0}
+#stage::before{inset:0;background:radial-gradient(520px circle at var(--mx,70%) var(--my,20%),#21D78916,transparent 60%),radial-gradient(700px circle at 8% 95%,#07C3F212,transparent 60%),radial-gradient(600px circle at 95% 85%,#FCF84A0d,transparent 60%),radial-gradient(#ffffff0b 1px,transparent 1px) 0 0/26px 26px}
+#stage::after{width:440px;height:440px;right:-140px;top:-140px;border-radius:50%;background:radial-gradient(circle,#21D78930,transparent 65%);filter:blur(24px);animation:fl 14s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(-200px,160px) scale(1.25)}}
+.slide{z-index:1}
+.slide.on{animation:sl .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sl{from{opacity:0;transform:translateX(var(--dx,30px))}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.92)}}
+@keyframes pp{50%{transform:scale(1.3)}}
+@keyframes sk{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes sh{to{background-position:300% 0}}
+@keyframes fy{50%{transform:translateY(-10px) rotate(-2deg)}}
+@keyframes gl{from{box-shadow:0 0 25px #21D78944}to{box-shadow:0 0 60px #07C3F288}}
+@keyframes sw{to{transform:translateX(120%)}}
+@keyframes gw{from{width:0}}
+.slide.on .in>*{animation:rise .6s cubic-bezier(.2,.8,.2,1) backwards}
+.slide.on .in>.cards{animation:none}
+.slide.on .card,.slide.on .fc>*{animation:pop .5s cubic-bezier(.2,.9,.3,1.2) backwards}
+.slide.on .bul>li,.slide.on .chk>li{animation:rise .5s backwards}
+.slide.on .in>.logo{animation:rise .6s backwards,fy 5s ease-in-out .6s infinite,gl 3s ease-in-out infinite alternate}
+.kick{display:inline-block;justify-self:start;font:600 .72rem var(--m);letter-spacing:.14em;text-transform:uppercase;color:var(--g1);background:#21D7891a;border:1px solid #21D78955;padding:.25em .9em;border-radius:999px}
+.slide:first-child .kick{display:none}
+h1 span{background:linear-gradient(90deg,var(--g1),var(--g2),var(--g3),var(--g1)) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 6s linear infinite}
+h2::after{height:4px;box-shadow:0 0 14px #21D78999;animation:gw .8s .25s backwards}
+.big{position:relative;overflow:hidden;box-shadow:0 8px 30px #21D78955;transition:transform .15s}
+.big::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,#ffffff66 50%,transparent 70%);transform:translateX(-120%);animation:sw 3s infinite}
+.big:hover{transform:translateY(-2px)}
+#top{background:linear-gradient(180deg,#46494c,var(--pn));box-shadow:0 2px 12px #0006;z-index:4}
+.mk{box-shadow:0 0 14px #21D78977}
+#top .nb{transition:.15s}#top .nb.go{background:linear-gradient(90deg,#2d6b9a,#365880);box-shadow:0 0 0 1px #07C3F255}
+#top .nb:hover{box-shadow:0 0 16px #07C3F277;transform:translateY(-1px)}
+.fd{font:700 .7rem var(--m);letter-spacing:.12em;text-transform:uppercase;color:var(--gy);margin-top:10px}
+.fl{border-left:3px solid transparent;padding-left:calc(2.2em - 3px);transition:background .15s}
+.fl.on{border-left-color:var(--g1);background:linear-gradient(90deg,#214283cc,transparent)}
+#st i{height:3px;box-shadow:0 0 10px var(--g1)}
+.card{background:linear-gradient(160deg,#464b4e,#35393b);border:1px solid #ffffff14;border-top:4px solid var(--c,var(--g3));border-radius:14px;box-shadow:0 8px 22px #0004;position:relative;overflow:hidden}
+.card:nth-child(4n+1){--c:var(--g1)}.card:nth-child(4n+2){--c:var(--g3)}.card:nth-child(4n+3){--c:var(--g2)}.card:nth-child(4n+4){--c:var(--pu)}
+.card.star{--c:var(--g1)}
+.card::after{content:"";position:absolute;right:-30px;top:-30px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 70%);opacity:.16;transition:opacity .2s}
+.card:hover{border-color:var(--c);box-shadow:0 14px 34px #0007,0 0 22px color-mix(in srgb,var(--c) 30%,transparent)}
+.card:hover::after,.card.open::after{opacity:.4}
+.card.star::before{content:"★ KEY";position:absolute;right:.8em;top:.8em;font:700 .62rem var(--m);color:#1b1b1b;background:var(--g1);padding:.15em .55em;border-radius:4px}
+.win{border-color:#ffffff22;box-shadow:0 18px 50px #000a,0 0 40px #21D78912}
+.wt{background:linear-gradient(180deg,#46494c,var(--pn))}
+.wt::before{content:"";width:10px;height:10px;border-radius:50%;background:#FF5F57;box-shadow:16px 0 #FEBC2E,32px 0 #28C840;margin:0 54px 0 14px;flex:none}
+.wt .tab{margin-right:auto}
+.run{background:linear-gradient(90deg,#2f7d45,#3f9a55);color:#eaffea;box-shadow:0 0 14px #21D78944;transition:.15s}
+.run:hover{box-shadow:0 0 22px #21D78999;transform:translateY(-1px)}
+.out.on{border-left:3px solid var(--g1)}.out div{animation:rise .25s backwards}
+.chk li{transition:.2s}
+.chk li.done{border-color:#21D78966;background:linear-gradient(90deg,#21D78914,var(--pn))}
+.chk li.done .bx{animation:pp .3s}
+.prog{box-shadow:inset 0 0 0 1px #ffffff12}.prog i{box-shadow:0 0 10px var(--g1)}
+.tip{background:linear-gradient(90deg,#FFC66D26,#3A372A 70%);box-shadow:0 6px 18px #0004}
+.q{border-left:4px solid var(--g3);box-shadow:0 6px 18px #0003}
+.op{transition:.15s}.op.ok{background:#21D7891f;animation:pp .35s}.op.bad{background:#FF6B681f;animation:sk .35s}
+.info{box-shadow:0 6px 18px #0004}
+.rg{transition:.15s}.rg:hover,.rg.on{transform:translateY(-2px)}
+.fb{box-shadow:0 4px 14px #0005;transition:.2s}.fb:hover{transform:scale(1.04);border-color:var(--g1)}
+.fb.d{background:#3d3a2a;box-shadow:0 0 18px #FFC66D33}
+.fa{color:var(--g3)}
+.num{background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.res{text-shadow:0 0 16px #21D78977}
+@media(max-width:800px){
+body{grid-template:"top" 46px "stage" 1fr "st" 30px/1fr}
+#menu{display:block}.proj,#st .r{display:none}
+#tree{position:fixed;top:calc(46px + env(safe-area-inset-top,0px));bottom:30px;width:265px;z-index:5;transform:translateX(-100%);transition:transform .25s}
+body.menu #tree{transform:none}
+.cols{grid-template-columns:1fr}
+.mock{height:auto;grid-template:"p" "e" "r" "t"/1fr}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header id="top">
+<button id="menu" aria-label="Show or hide files (S)" title="Show or hide files (S)">≡</button><span class="mk"></span><span class="proj">bootcamp</span>
+<span class="tabf" id="tabf">welcome.py</span><span class="sp"></span>
+<button class="nb" data-a="prev">Back</button><button class="nb go" data-a="next">Next ▶</button>
+</header>
+<nav id="tree" aria-label="Slides"></nav>
+<main id="stage"></main>
+<footer id="st"><i id="pg"></i><span id="path"></span><span class="r" id="pos"></span></footer>
+
+<script>
+const $=(q,e=document)=>e.querySelector(q),$$=(q,e=document)=>[...e.querySelectorAll(q)];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const RX=/(#.*)|(f?"[^"\n]*"|f?'[^'\n]*')|\b(def|return|if|elif|else|for|in|import|from|as|True|False|None|and|or|not|while)\b|\b(print|len|sum|max|min|range|type|str|int|float|input)(?=\()|\b(\d+\.?\d*)\b/g;
+const hl=s=>esc(s).replace(RX,(m,c,st,k,b)=>c?`<i class=c>${m}</i>`:st?`<i class=s>${m}</i>`:k?`<i class=k>${m}</i>`:b?`<i class=b>${m}</i>`:`<i class=n>${m}</i>`).replace(/(<i class=k>def<\/i> )(\w+)/g,'$1<i class=f>$2</i>');
+const nums=n=>Array.from({length:n},(_,i)=>i+1).join('\n');
+function win(code,out,f,sh){return `<div class=win data-out='${JSON.stringify(out).replace(/'/g,'&#39;')}' data-f="${sh?'Terminal':f}"><div class=wt><span class=tab>${sh?'Terminal':f}</span><button class=run data-a=run>▶ ${sh?'Enter':'Run'}</button></div><div class=ed><pre class=gut>${nums(code.split('\n').length)}</pre><pre class=src>${sh?esc(code):hl(code)}</pre></div><div class=out></div></div>`}
+const cd=(h,code,out,f,bul,sh)=>`<h2>${h}</h2><div class=cols>${win(code,out,f,sh)}<ul class=bul>${bul.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+const cards=(h,it,t)=>`<h2>${h}</h2><div class=cards>${it.map(c=>`<button class="card${c.s?' star':''}" data-a=card><h3>${c.h}</h3><p>${c.p}</p><div class=d>${c.d}</div></button>`).join('')}</div>`;
+const steps=(h,st,tip)=>`<h2>${h}</h2><div class=cw><ul class=chk>${st.map(s=>`<li data-a=chk><span class=bx>✓</span><span>${s}</span></li>`).join('')}</ul><div class=prog><i></i></div><p class=pt>0 of ${st.length} done</p></div>${tip?`<p class=tip>${tip}</p>`:''}`;
+const quiz=(h,qs)=>`<h2>${h}</h2>${qs.map(q=>`<div class=q data-a-ans=${q.a}><p class=qt>${q.q}</p><div class=ops>${q.o.map((o,i)=>`<button class=op data-a=opt data-i=${i}>${o}</button>`).join('')}</div><p class=ex>${q.e}</p></div>`).join('')}`;
+const IFL=['score = 65','if score >= 70:','    print("Distinction")','elif score >= 50:','    print("Pass")','else:','    print("Retake")'],IFB=[-1,0,0,1,1,2,2];
+const EXC=`scores = [70, 85, 92, 60, 48]
+for s in scores:
+    print(s)
+
+def average(numbers):
+    return sum(numbers) / len(numbers)
+
+avg = average(scores)
+print("Average:", avg)
+if avg >= 50:
+    print("Pass")
+else:
+    print("Retake")`;
+const TIPS=['Your folders and files live here. Double-click a file to open it.','The editor is where you write code. PyCharm colours it and suggests words as you type.','Click the green ▶ and your output shows here, with any errors.','A command line inside PyCharm. Perfect for pip install.'];
+const PLAN=`# Problem: 10% off when the total is 100 or more
+# INPUT: a list of prices
+# 1. Add up the prices to get the total
+# 2. If total is 100 or more, discount = 10% of total
+# 3. Otherwise, discount = 0
+# 4. Show total minus discount
+# OUTPUT: the amount to pay`;
+const pw=(code,f)=>`<div class=win><div class=wt><span class=tab>${f}</span></div><div class=ed><pre class=gut>${nums(code.split('\n').length)}</pre><pre class=src>${hl(code)}</pre></div></div>`;
+const S=[
+{p:'Welcome',f:'welcome.py',h:`<div class=logo><b>PC</b><i></i></div><h1>Python <span>for data</span></h1><p class=lead>An interactive, step-by-step bootcamp: the language, your editor and the packages that make Python powerful.</p><button class=big data-a=next>Start the lesson ▶</button>`},
+{p:'Welcome',f:'five_day_plan.py',h:cards('The 5-day plan',[{h:'Day 1 · Python basics',p:'Today: the language and your tools.',d:'Variables, lists, loops, functions, PyCharm and packages. Planning before coding.',s:1},{h:'Day 2 · Tables with pandas',p:'Load and explore real data.',d:'Read Excel and CSV files, look at rows and columns, filter and sort.'},{h:'Day 3 · Clean and analyse',p:'Make messy data usable.',d:'Fix missing values, group and summarise, build simple calculations.'},{h:'Day 4 · Charts',p:'Show what the numbers say.',d:'Line, bar and pie charts with matplotlib.'},{h:'Day 5 · Put it to work',p:'A small project, start to finish.',d:'Plan, code and present a short data task from your own work.'}])+'<p class=hint>Days 2 to 5 are an outline and may change.</p>'},
+{p:'Welcome',f:'day1_goals.py',h:`<h2>Day 1 goals</h2><p class=lead>By the end of today you will be able to:</p><ul class=bul><li><b>Plan</b> a small problem in plain English or a flowchart before coding.</li><li><b>Install</b> Python and PyCharm and run a file.</li><li><b>Write</b> simple code with variables, lists, dictionaries, if, loops and functions.</li><li><b>Read</b> an error message and fix common mistakes.</li><li><b>Install</b> a package with pip, ready for pandas tomorrow.</li></ul><p class=hint>Nobody is expected to remember everything. The goal is to feel at home.</p>`},
+{p:'Welcome',f:'roadmap.py',h:cards('What we will learn today',[{h:'0. Think first',p:'Plan before you type.',d:'A five-step routine, plain-English plans and flowcharts that make code easier to write.'},{h:'1. Python basics',p:'Install Python and write code.',d:'Variables, lists, loops and functions, first in the terminal.'},{h:'2. Your editor',p:'Set up PyCharm.',d:'Create a project, write a file and run it with one click.'},{h:'3. Packages',p:'Add power with pip.',d:'Install pandas, numpy and more to work with real data.'}])},
+{p:'Before you code',f:'think_first.py',h:cards('Think first, then code',[{h:'1. Understand',p:'What is the question?',d:'Say the problem in your own words. What goes in (input)? What must come out (output)? Example: given a list of prices, show what the customer pays.'},{h:'2. Plan',p:'Steps in plain English.',d:'Write 3 to 6 short steps, or draw a flowchart. No Python yet. If you cannot explain it in English, you are not ready to code it.',s:1},{h:'3. Code',p:'One step at a time.',d:'Turn each plan line into code. Run after every small piece so mistakes stay small and easy to find.'},{h:'4. Test',p:'Try numbers you know.',d:'Use inputs where you already know the answer. Try the edges too: an empty list, zero, or a value right on the limit.'},{h:'5. Improve',p:'Tidy and reuse.',d:'Give variables clear names, add comments, and turn repeated code into a function.'}],'Click each card. Real work loops: if a test fails, go back to Plan or Code.')},
+{p:'Before you code',f:'plan.txt',h:`<h2>Plan in plain English</h2><p class=tip><b>Problem:</b> A shop gives 10% off when the total is 100 or more. Work out what the customer pays.</p><div class=cols>${pw(PLAN,'plan.txt')}<ul class=bul><li><b>Input:</b> what goes in? A list of prices.</li><li><b>Process:</b> which small steps turn it into the answer?</li><li><b>Output:</b> what comes out? The amount to pay.</li><li>Write the plan as <code>#</code> comments. They become the skeleton of your code.</li></ul></div>`},
+{p:'Before you code',f:'flowchart.txt',h:`<h2>Or draw it as a flowchart</h2><div class=cols><div class=fc><div class="fb t">Start</div><div class=fa>↓</div><div class=fb>Add up the prices → total</div><div class=fa>↓</div><div class="fb d">Is total 100 or more?</div><div class=br><div class=bc><div class=fa>Yes ↓</div><div class=fb>discount = 10% of total</div></div><div class=bc><div class=fa>No ↓</div><div class=fb>discount = 0</div></div></div><div class=fa>↓</div><div class=fb>Show total − discount</div><div class=fa>↓</div><div class="fb t">End</div></div><ul class=bul><li><b>Rounded boxes</b> start and end the flow.</li><li><b>Rectangles</b> are actions.</li><li>The <b>yellow box</b> is a question with a Yes and a No path. In Python it becomes <code>if / else</code>.</li><li>Pen and paper is fine. Plan first, type later.</li></ul></div>`},
+{p:'Part 1 · Python basics',f:'what_is_python.py',h:cards('What is Python?',[{h:'Free',p:'No licence fee.',d:'Download it from python.org and use it for any project.'},{h:'Readable',p:'Looks like English.',d:'Code such as print("Hi") is easy to read, even on day one.'},{h:'Great for data',p:'Used by analysts everywhere.',d:'Cleaning, analysing and charting data are everyday Python jobs.'},{h:'Runs anywhere',p:'Windows, Mac, Linux.',d:'The same code works on all of them.'}])},
+{p:'Part 1 · Python basics',f:'install_python.py',h:steps('Install Python',['Open <b>python.org/downloads</b> in your browser.','Click the yellow button to download the latest Python 3.','Open the installer and tick <b>Add python.exe to PATH</b>.','Click <b>Install Now</b> and wait for "Setup was successful".'],'Do not skip the PATH box. It lets your computer find Python.')},
+{p:'Part 1 · Python basics',f:'check_install.py',h:cd('Check that it works','python --version\npython',['Python 3.12.4','Python 3.12.4 (main) on win32','Type "help" for more information.','>>> _'],'',['Open the terminal. On Windows, search for <b>Command Prompt</b>.','The <code>&gt;&gt;&gt;</code> sign means Python is waiting for you.','On Mac, type <code>python3</code>.'],1)},
+{p:'Part 1 · Python basics',f:'install_help.py',h:cards('If the install goes wrong',[{h:'python is not recognized',p:'Windows cannot find Python.',d:'Usually the PATH box was not ticked. Run the installer again, uninstall, then install again with <b>Add python.exe to PATH</b> ticked. Open a <b>new</b> Command Prompt and try again. On Windows, <code>py --version</code> may also work.'},{h:'Mac: command not found',p:'Use python3 instead.',d:'On a Mac type <code>python3</code> and <code>pip3</code> instead of <code>python</code> and <code>pip</code>.'},{h:'pip is not recognized',p:'pip cannot be found.',d:'Try <code>python -m pip install pandas</code>. This runs pip through Python and often works when plain pip does not.'},{h:'PyCharm has no interpreter',p:'PyCharm cannot find Python.',d:'Open <b>Settings → Project → Python Interpreter</b>, click <b>Add Interpreter</b>, choose <b>Local</b>, and pick the Python you installed.'},{h:'Still stuck?',p:'Do not struggle alone.',d:'Note the exact error message, take a screenshot, and ask your facilitator. Most install problems take two minutes to fix once someone sees them.',s:1}],'Click the problem that matches yours.')},
+{p:'Part 1 · Python basics',f:'try_python.py',h:`<h2>Try Python live</h2><div class=repl data-a-r><div class=log><div class=g>Python 3.12 · one line at a time</div></div><div class=inl><span>&gt;&gt;&gt;</span><input aria-label="Python line" autocomplete=off spellcheck=false></div></div><div class=chips>${[['print("Hello, data world!")','Hello, data world!'],['7 * 3','21'],['name = "Ama"',''],['name.upper()',"'AMA'"],['len(name)','3'],['scores = [70, 85, 92]',''],['sum(scores)','247']].map(c=>`<button data-a=chip data-c='${c[0]}' data-o="${c[1]}">${esc(c[0])}</button>`).join('')}</div>`},
+{p:'Part 1 · Python basics',f:'print_basics.py',h:cd('Print and comments','# This is a comment\nprint("Welcome")\nprint(2 + 3)\nprint("Age:", 25)',['Welcome','5','Age: 25'],'print_basics.py',['<code>print()</code> shows something on screen.','Text goes inside quotes, numbers do not.','A line starting with <code>#</code> is a note. Python ignores it.'])},
+{p:'Part 1 · Python basics',f:'variables.py',h:cd('Variables','name = "Ama"\nage = 25\nprice = 12.5\nprint(name, age)\nage = age + 1\nprint(age)',['Ama 25','26'],'variables.py',['A variable is a <b>named box</b> that stores a value.','Use <code>=</code> to put a value in the box.','Names use letters, numbers and <code>_</code>, and cannot start with a number.','<code>Age</code> and <code>age</code> are different names.'])},
+{p:'Part 1 · Python basics',f:'types_and_maths.py',h:cd('Data types and maths','print(type(4))\nprint(7 + 3, 7 - 3)\nprint(7 * 3, 7 / 2)\nprint(7 // 2, 7 % 2)\nprint(2 ** 3)',["<class 'int'>",'10 4','21 3.5','3 1','8'],'types_and_maths.py',['<b>str</b> is text, <b>int</b> is a whole number, <b>float</b> is a decimal, <b>bool</b> is True or False.','<code>//</code> divides and drops the decimals.','<code>%</code> gives the remainder.','<code>**</code> means "to the power of".'])},
+{p:'Part 1 · Python basics',f:'text.py',h:cd('Working with text','city = "accra"\nprint(city.upper())\nprint(city.title())\nprint(len(city))\nmsg = f"I live in {city}"\nprint(msg)',['ACCRA','Accra','5','I live in accra'],'text.py',['<code>.upper()</code> and <code>.title()</code> change the case.','<code>len()</code> counts characters.','An <b>f-string</b> (<code>f"..."</code>) drops variables into text using <code>{ }</code>.'])},
+{p:'Part 1 · Python basics',f:'lists.py',h:cd('Lists','scores = [70, 85, 92]\nprint(scores[0])\nscores.append(60)\nprint(len(scores))\nprint(sum(scores))\nprint(max(scores))',['70','4','307','92'],'lists.py',['A list holds many values in order.','Counting starts at <b>0</b>, so <code>scores[0]</code> is the first item.','<code>.append()</code> adds to the end.','<code>sum()</code>, <code>max()</code> and <code>min()</code> work on number lists.'])},
+{p:'Part 1 · Python basics',f:'dictionaries.py',h:cd('Dictionaries','student = {\n  "name": "Kofi",\n  "age": 22,\n  "city": "Accra"\n}\nprint(student["name"])\nstudent["age"] = 23\nprint(student)',['Kofi',"{'name': 'Kofi', 'age': 23, 'city': 'Accra'}"],'dictionaries.py',['A dictionary stores <b>label: value</b> pairs.','Look up a value by its label, not its position.','Think of one row of a spreadsheet.'])},
+{p:'Part 1 · Python basics',f:'if_else.py',h:`<h2>Making decisions with if</h2><div class=cols><div class=win><div class=wt><span class=tab>if_else.py</span></div><div class=ed><pre class=gut>${nums(7)}</pre><pre class=src>${IFL.map((l,i)=>`<span class=ln data-b=${IFB[i]}${i?'':' id=sv'}>${hl(l)}</span>`).join('')}</pre></div></div><div><div class=num id=nv>65</div><input class=sl type=range min=0 max=100 value=65 data-a=sl aria-label="Score"><p class=res id=rs>Pass</p><ul class=bul><li>Python checks each condition from the top.</li><li>The colon and the <b>4-space indent</b> are required.</li></ul></div></div>`},
+{p:'Part 1 · Python basics',f:'loops.py',h:cd('Repeating with loops','prices = [35, 28, 12]\ntotal = 0\nfor p in prices:\n    total = total + p\nprint(total)\n\nfor i in range(3):\n    print("Round", i)',['75','Round 0','Round 1','Round 2'],'loops.py',['<code>for</code> visits every item in a list, one at a time.','The indented lines run on each visit.','<code>range(3)</code> gives 0, 1, 2.'])},
+{p:'Part 1 · Python basics',f:'functions.py',h:cd('Functions','def average(numbers):\n    return sum(numbers) / len(numbers)\n\nresult = average([70, 85, 92])\nprint(result)',['82.33333333333333'],'functions.py',['A function is a <b>reusable recipe</b>.','<code>def</code> creates it, <code>return</code> sends back the answer.','Write once, use as many times as you like.'])},
+{p:'Part 1 · Python basics',f:'plan_to_code.py',h:cd('From plan to code',`# 1. Add up the prices
+prices = [50, 30, 40]
+total = sum(prices)
+# 2-3. Work out the discount
+if total >= 100:
+    discount = total * 0.10
+else:
+    discount = 0
+# 4. Show what to pay
+print("To pay:", total - discount)`,['To pay: 108.0'],'plan_to_code.py',['Each plan line became <b>one to three lines</b> of code.','The plan comments stay in the file as notes.','The <code>if / else</code> is the yellow box from the flowchart.','Test it: change <code>prices</code> so the total is exactly 100. What do you expect?'])},
+{p:'Part 1 · Python basics',f:'when_it_breaks.py',h:cards('When things go wrong',[{h:'SyntaxError',p:'Python cannot read the line.',d:'Often a missing quote, bracket or colon. Check the line shown and the one above it.'},{h:'NameError',p:'Python does not know that name.',d:'Usually a typo, or a variable used before it was created. Remember <code>Age</code> and <code>age</code> are different.'},{h:'IndentationError',p:'The spaces are off.',d:'Lines inside <code>if</code>, <code>for</code> and <code>def</code> need the same 4 spaces.'},{h:'TypeError',p:'Mixing the wrong kinds.',d:'For example <code>"Age: " + 25</code> mixes text and a number. Use <code>print("Age:", 25)</code> instead.'},{h:'Reading the error',p:'Last line first.',d:'The last line names the error. Look just above it for the line number, then fix that line.',s:1}])+'<p class=lead>Errors are messages, not failures.</p>'},
+{p:'Practice',f:'quiz_basics.py',h:quiz('Quick quiz: Python basics',[{q:'What does <code>print(2 + 3)</code> show?',o:['23','5','2 + 3','Error'],a:1,e:'Python adds the numbers, so you see 5.'},{q:'Which index is the FIRST item of a list?',o:['0','1','-1','first'],a:0,e:'Python counts from 0.'},{q:'What must follow <code>if score >= 50</code>?',o:['a semicolon','a full stop','a colon','nothing'],a:2,e:'Every if line ends with a colon, then an indented block.'},{q:'What should you do BEFORE writing code?',o:['Plan the steps in plain English','Install more packages','Memorise every command','Run it and see'],a:0,e:'A short plan or flowchart saves time and mistakes.'},{q:'Python shows a <code>NameError</code>. What is the most likely cause?',o:['A name was misspelled or not created yet','Python is not installed','The file is too long','The computer is slow'],a:0,e:'A NameError means Python does not know that name. Check spelling and order.'}])},
+{p:'Practice',f:'exercise_scores.py',h:`<h2>Exercise: class scores</h2><div class=cw><ul class=chk>${['Write your plan as # comments first.','Make a list of 5 student scores.','Use a loop to print each score.','Write a function that returns the average.','Print "Pass" if the average is 50 or more, else "Retake".'].map(s=>`<li data-a=chk><span class=bx>✓</span><span>${s}</span></li>`).join('')}</ul><div class=prog><i></i></div><p class=pt>0 of 5 done</p></div><button class=big data-a=sol>Show solution</button><div class=sol style="display:none">${win(EXC,['70','85','92','60','48','Average: 71.0','Pass'],'exercise_scores.py')}</div>`},
+{p:'Part 2 · Your editor',f:'what_is_an_ide.py',h:cards('What is an IDE?',[{h:'IDLE',p:'Comes with Python.',d:'Very basic. Fine for the first five minutes.'},{h:'Jupyter',p:'Notebooks.',d:'Mix code, notes and charts in one page.'},{h:'VS Code',p:'Light editor.',d:'Add-ons make it flexible for many languages.'},{h:'PyCharm',p:'Built for Python. Our choice.',d:'Projects, smart suggestions, a debugger and one-click Run.',s:1}])+'<p class=lead>An IDE is a workspace with editor, runner and helper in one window.</p>'},
+{p:'Part 2 · Your editor',f:'install_pycharm.py',h:steps('Install PyCharm',['Go to <b>jetbrains.com/pycharm</b>.','Click Download and choose your system.','Run the installer and accept the defaults.','Open PyCharm. The free version is enough for us.'])},
+{p:'Part 2 · Your editor',f:'first_project.py',h:steps('Create your first project',['Click <b>New Project</b> and name it <code>bootcamp</code>.','Choose a folder you can find again.','Keep <b>Virtualenv</b> selected, then click <b>Create</b>.','Right-click the project, choose <b>New → Python File</b> and name it <code>hello</code>.','Type <code>print("Hello from PyCharm")</code>.','Click the green <b>Run</b> triangle, or press <b>Shift+F10</b>.'])},
+{p:'Part 2 · Your editor',f:'pycharm_tour.py',h:`<h2>A tour of PyCharm</h2><div class=mock>${[['p','Project','bootcamp\n  hello.py\n  .venv'],['e','Editor',''],['r','Run','Hello from PyCharm'],['t','Terminal','(.venv) $ _']].map((r,i)=>`<button class=rg data-a=rg data-k=${i} style="grid-area:${r[0]}"><strong>${r[1]}</strong>${i==1?hl('print("Hello from PyCharm")'):esc(r[2]).replace(/\n/g,'<br>')}</button>`).join('')}</div><p class="info" id=info></p>`},
+{p:'Part 3 · Packages',f:'what_is_a_package.py',h:cd('What is a package?','import math\nprint(math.sqrt(16))\nprint(math.pi)',['4.0','3.141592653589793'],'what_is_a_package.py',['A package is code someone else wrote so you do not have to.','Think of a <b>toolbox</b> you add to Python.','Thousands live on <b>PyPI</b>, the Python Package Index.','<code>import</code> opens the toolbox. <b>pip</b> downloads new ones.'])},
+{p:'Part 3 · Packages',f:'install_package.py',h:`<h2>Install a package</h2><div class=tabsw><div class=tabs><button class="tb on" data-a=tab data-i=0>Terminal</button><button class=tb data-a=tab data-i=1>Inside PyCharm</button></div><div class="pane on">${win('pip install pandas',['Collecting pandas','Installing collected packages: pandas','Successfully installed pandas'],'',1)}<p>Then test it in a file:</p>${win('import pandas\nprint(pandas.__version__)',['2.2.3  (your number may differ)'],'test_pandas.py')}</div><div class=pane><ul class=chk>${['Open <b>Settings → Python Interpreter</b>.','Click the <b>+</b> button and search <code>pandas</code>.','Click <b>Install Package</b> and wait for the tick.'].map(s=>`<li data-a=chk><span class=bx>✓</span><span>${s}</span></li>`).join('')}</ul></div></div>`},
+{p:'Part 3 · Packages',f:'data_packages.py',h:cards('Packages we will use for data',[{h:'pandas',p:'Tables of data.',d:'Like Excel in code: load, filter, group and summarise.'},{h:'numpy',p:'Fast maths.',d:'Works on whole lists of numbers at once.'},{h:'matplotlib',p:'Charts and graphs.',d:'Turn numbers into lines, bars and pies.'},{h:'openpyxl',p:'Excel files.',d:'Lets pandas read and write .xlsx files.'}])+'<p class=lead>Install all four with: <code>pip install pandas numpy matplotlib openpyxl</code></p>'},
+{p:'Part 3 · Packages',f:'quiz_tools.py',h:quiz('Quick quiz: editor and packages',[{q:'Which tool downloads packages?',o:['pip','PyCharm','IDLE','PATH'],a:0,e:'pip fetches packages from PyPI.'},{q:'Which package works with tables of data?',o:['pandas','pip','PyPI','math'],a:0,e:'pandas is the table tool for data work.'},{q:'What runs your file in PyCharm?',o:['Shift+F10','Ctrl+P','Alt+F4','Esc'],a:0,e:'Shift+F10 is the same as the green Run triangle.'}])},
+{p:'Wrap up',f:'key_terms.py',h:cards('Key terms',[{h:'Variable',p:'A named box for a value.',d:'<code>age = 25</code>'},{h:'List',p:'Many values in order.',d:'<code>scores = [70, 85, 92]</code>'},{h:'Dictionary',p:'Label and value pairs.',d:'<code>student["name"]</code> gives the name.'},{h:'Function',p:'A reusable recipe.',d:'<code>def average(numbers):</code>'},{h:'Package',p:'Code written by others.',d:'pandas and numpy are packages.'},{h:'IDE',p:'A workspace for coding.',d:'PyCharm is our IDE.'},{h:'pip',p:'The package installer.',d:'<code>pip install pandas</code>'}],'Keep this slide as a quick reference.')},
+{p:'Wrap up',f:'good_habits.py',h:steps('Habits of good coders',['Plan first: write the steps as <code>#</code> comments.','Use names that explain themselves, like <code>total_price</code>, not <code>x</code>.','Run after every few lines, not only at the end.','Test with numbers where you already know the answer.','Read the error message before you change anything.','Save often with <b>Ctrl+S</b>.'],'Slow and steady wins. Small tested steps beat one big guess.')},
+{p:'Wrap up',f:'get_ready_day2.py',h:steps('Get ready for Day 2',['Open the terminal and check <code>python --version</code> works.','Install the data packages: <code>pip install pandas numpy matplotlib openpyxl</code>.','Open PyCharm and run your <code>hello</code> file once more.','Finish the class-scores exercise, planning it first.','Pick a small Excel file from your own work that you know well, ready for tomorrow.'],'Day 2: we load a real table with pandas and start exploring it.')},
+{p:'Wrap up',f:'summary.py',h:`<h2>You did it</h2><div class=score id=sc>0 / 8</div><p class=lead>quiz answers correct</p><ul class=bul><li>Installed Python and ran code in the terminal</li><li>Used variables, lists, dictionaries, if, loops and functions</li><li>Created and ran a project in PyCharm</li><li>Installed packages with pip</li><li>Planned with steps and flowcharts, and read common errors</li></ul><p class=tip>Day 2: load a real dataset with pandas.</p>`},
+{p:'Wrap up',f:'facilitators.py',h:`<h2>Your facilitators</h2><div style="display:flex;gap:1.2em;flex-wrap:wrap"><div style="flex:1;min-width:240px;background:#2B2B2B;border:1px solid #4a4a4a;border-top:4px solid var(--g1);border-radius:10px;padding:1.1em 1.3em"><h3 style="margin:0 0 .3em">Cyril Darbo Tobil</h3><p style="margin:0;color:var(--gy)">Facilitator</p><p style="margin:.6em 0 0;font-weight:700"><a href="tel:0557755625" style="color:var(--ink);text-decoration:none">📞 0557755625</a></p></div><div style="flex:1;min-width:240px;background:#2B2B2B;border:1px solid #4a4a4a;border-top:4px solid var(--g1);border-radius:10px;padding:1.1em 1.3em"><h3 style="margin:0 0 .3em">Samuel Nana Ewusi Hagan</h3><p style="margin:0;color:var(--gy)">Facilitator</p><p style="margin:.6em 0 0;font-weight:700"><a href="tel:0559381134" style="color:var(--ink);text-decoration:none">📞 0559381134</a></p></div></div>`}
+];
+const TQ=8;let score=0,cur=0;
+const stage=$('#stage'),tree=$('#tree');
+let lastp='';
+S.forEach((s,i)=>{const e=document.createElement('section');e.className='slide';e.innerHTML=`<div class=in><div class=kick>${s.p}</div>${s.h}</div>`;stage.appendChild(e);
+if(s.p!==lastp){lastp=s.p;tree.insertAdjacentHTML('beforeend',`<div class=fd>${s.p}</div>`)}
+tree.insertAdjacentHTML('beforeend',`<button class=fl data-a=go data-i=${i}>${s.f}</button>`)});
+const sl=$$('.slide'),fl=$$('.fl');
+const stag=s=>{$$('.in>*',s).forEach((e,i)=>e.style.animationDelay=i*.06+'s');$$('.cards>*,.fc>*,.bul>li,.chk>li,.q',s).forEach(e=>e.style.animationDelay=.12+[...e.parentNode.children].indexOf(e)*.07+'s')};
+function boom(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=document.createElement('canvas');c.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';stage.appendChild(c);const W=c.width=stage.clientWidth,H=c.height=stage.clientHeight,x=c.getContext('2d'),cl=['#21D789','#FCF84A','#07C3F2','#CC7832','#9876AA'],P=Array.from({length:120},()=>({x:Math.random()*W,y:-20-Math.random()*H*.6,vx:Math.random()*2-1,vy:2+Math.random()*3,r:Math.random()*6,s:4+Math.random()*6,c:cl[Math.random()*5|0]}));let f=0;(function t(){x.clearRect(0,0,W,H);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});if(++f<260)requestAnimationFrame(t);else c.remove()})()}
+stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();stage.style.setProperty('--mx',e.clientX-r.left+'px');stage.style.setProperty('--my',e.clientY-r.top+'px')});
+function go(n){stage.style.setProperty('--dx',(n>=cur?36:-36)+'px');cur=Math.max(0,Math.min(S.length-1,n));sl.forEach((x,j)=>x.classList.toggle('on',j===cur));fl.forEach((x,j)=>x.classList.toggle('on',j===cur));
+$('#tabf').textContent=S[cur].f;$('#path').textContent='bootcamp › '+S[cur].p+' › '+S[cur].f;$('#pos').textContent='Slide '+(cur+1)+' of '+S.length+'   UTF-8   Python 3.12';
+$('#pg').style.width=((cur+1)/S.length*100)+'%';fl[cur].scrollIntoView({block:'nearest'});document.body.classList.remove('menu');
+stag(sl[cur]);if(S[cur].f==='summary.py'){$('#sc').textContent=score+' / '+TQ;boom()}try{location.hash=cur+1}catch(e){}}
+function runWin(w){const o=$('.out',w),L=JSON.parse(w.dataset.out),t=w.dataset.f==='Terminal';o.className='out on';o.innerHTML='';
+const add=(x,c)=>{const d=document.createElement('div');d.textContent=x;if(c)d.className=c;o.appendChild(d)};
+if(!t)add('Run: '+w.dataset.f.replace('.py',''),'g');let i=0;clearInterval(w._t);
+w._t=setInterval(()=>{if(i<L.length)add(L[i++]);else{clearInterval(w._t);if(!t){add('');add('Process finished with exit code 0','g')}}},t?350:260)}
+/* mini python */
+let EV=false;try{EV=new Function('return 1')()===1}catch(e){}
+const rp=v=>typeof v==='string'?`'${v}'`:v===true?'True':v===false?'False':v==null?'None':Array.isArray(v)?'['+v.map(rp).join(', ')+']':typeof v==='object'?'{'+Object.entries(v).map(([k,x])=>`'${k}': ${rp(x)}`).join(', ')+'}':String(v);
+const fm=v=>typeof v==='string'?v:rp(v);
+String.prototype.upper=function(){return this.toUpperCase()};String.prototype.lower=function(){return this.toLowerCase()};
+String.prototype.title=function(){return this.replace(/\w\S*/g,w=>w[0].toUpperCase()+w.slice(1).toLowerCase())};
+Array.prototype.append=function(x){this.push(x)};
+function pe(line,S0,add){
+const js=line.replace(/\bTrue\b/g,'true').replace(/\bFalse\b/g,'false').replace(/\bNone\b/g,'null').replace(/(\w+|\))\s*\/\/\s*(\w+)/g,'Math.floor($1/$2)').replace(/\bf(["'])(.*?)\1/g,(m,q,b)=>'`'+b.replace(/\{/g,'${')+'`');
+const E={print:(...a)=>add(a.map(fm).join(' ')),len:x=>x.length,sum:a=>a.reduce((x,y)=>x+y,0),max:(...a)=>Math.max(...[].concat(...a)),min:(...a)=>Math.min(...[].concat(...a)),range:n=>[...Array(n).keys()],str:String,int:Math.trunc,float:Number,type:x=>"<class '"+(typeof x==='string'?'str':typeof x==='boolean'?'bool':Number.isInteger(x)?'int':typeof x==='number'?'float':'list')+"'>"};
+try{const m=js.match(/^([A-Za-z_]\w*)\s*=(?!=)\s*(.+)$/),ex=m?m[2]:js;
+const r=new Function('S','E','with(E){with(S){return ('+ex+')}}')(S0,E);
+if(m)S0[m[1]]=r;else if(r!==undefined&&!/^print\(/.test(js))add(rp(r))}
+catch(e){add(e instanceof SyntaxError?'SyntaxError: invalid syntax':e instanceof ReferenceError?"NameError: name '"+e.message.split(' ')[0]+"' is not defined":e.name+': '+e.message,'er')}}
+function repl(r,line,canned){const log=$('.log',r);r._s=r._s||{};const add=(t,c)=>{const d=document.createElement('div');d.textContent=t;if(c)d.className=c;log.appendChild(d)};
+add('>>> '+line,'u');if(EV)pe(line,r._s,add);else if(canned!=null){if(canned)add(canned)}else add('Typing is not available in this view. Use the suggestions below.','g');log.scrollTop=1e5}
+const ifu=v=>{$('#nv').textContent=v;$('#sv').innerHTML=hl('score = '+v);const b=v>=70?0:v>=50?1:2;$$('.ln').forEach(l=>l.classList.toggle('on',+l.dataset.b===b));$('#rs').textContent='Output: '+['Distinction','Pass','Retake'][b]};
+function chk(li){li.classList.toggle('done');const w=li.closest('.cw')||li.closest('.pane'),a=$$('li',w),d=a.filter(x=>x.classList.contains('done')).length;
+const p=$('.prog i',w);if(p){p.style.width=d/a.length*100+'%';const t=$('.pt',w);t.textContent=d===a.length?'All done. Well done!':t.textContent.replace(/\d+ of (\d+) done/,d+' of $1 done');w.classList.toggle('all',d===a.length)}}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
+if(a==='next')go(cur+1);else if(a==='prev')go(cur-1);else if(a==='go')go(+el.dataset.i);
+else if(a==='run')runWin(el.closest('.win'));
+else if(a==='card')el.classList.toggle('open');
+else if(a==='chk')chk(el);
+else if(a==='chip')repl(el.closest('.slide').querySelector('[data-a-r]'),el.dataset.c,el.dataset.o);
+else if(a==='sol'){const s=$('.sol',el.parentNode);const h=s.style.display==='none';s.style.display=h?'block':'none';el.textContent=h?'Hide solution':'Show solution'}
+else if(a==='tab'){const w=el.closest('.tabsw');$$('.tb',w).forEach(x=>x.classList.toggle('on',x===el));$$('.pane',w).forEach((x,i)=>x.classList.toggle('on',i===+el.dataset.i))}
+else if(a==='rg'){$$('.rg').forEach(x=>x.classList.toggle('on',x===el));$('#info').textContent=TIPS[el.dataset.k]}
+else if(a==='opt'){const q=el.closest('.q');if(q.dataset.done)return;q.dataset.done=1;const ok=+el.dataset.i===+q.dataset.aAns;el.classList.add(ok?'ok':'bad');if(ok)score++;else $$('.op',q)[q.dataset.aAns].classList.add('ok');const x=$('.ex',q);x.prepend(ok?'Correct! ':'Not quite. ');x.classList.add('on')}});
+document.addEventListener('input',e=>{if(e.target.dataset.a==='sl')ifu(+e.target.value)});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type!=='range'){if(e.key==='Enter'&&e.target.value.trim()){repl(e.target.closest('[data-a-r]'),e.target.value.trim());e.target.value=''}return}
+if(e.target.type==='range')return;
+if(['ArrowRight','PageDown'].includes(e.key)){e.preventDefault();go(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+if(e.key==='s')$('#menu').click();if(e.key==='f'&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen()});
+$('#menu').onclick=()=>{document.body.classList.toggle(matchMedia('(max-width:800px)').matches?'menu':'hide');try{localStorage.setItem('bcHide',document.body.classList.contains('hide')?'1':'0')}catch(e){}};
+try{if(localStorage.getItem('bcHide')==='1')document.body.classList.add('hide')}catch(e){}
+let x0=null;stage.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+stage.addEventListener('touchend',e=>{if(x0===null)return;const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>70&&!e.target.closest('.src,.out,.sl'))go(d<0?cur+1:cur-1);x0=null});
+ifu(65);const h=parseInt((location.hash||'').slice(1),10);go(h?h-1:0);
+</script></body></html>
